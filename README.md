@@ -13,7 +13,7 @@ A quick introduction for writing assignments in the Otter-Grader format and a de
 ## Plugin Installation
 
 **Make sure you have a compatible JupyterHub and Grading API running and reachable.  
-Details on how to set this up can be found here: https://github.com/forschungsprojekte-II-ws2223/jupyterhub-gradeservice**
+Details on how to set this up can be found here: https://github.com/SE-Stuttgart/jupyterhub-gradeservice/tree/main**
 
 Download the latest version of this plugin [here](https://github.com/SE-Stuttgart/moodle-mod_jupyter/releases/tag/1.0.0/) and add it to your Moodle installation.
 
