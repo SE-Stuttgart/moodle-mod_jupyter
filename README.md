@@ -37,7 +37,7 @@ Download the latest version of this plugin [here](https://github.com/SE-Stuttgar
 
 ## Development Environment Setup
 
-Follow [this](https://github.com/forschungsprojekte-II-ws2223/setup/blob/main/DevEnvSetup.md) guide for setting up the development environment.
+Follow [this](https://github.com/SE-Stuttgart/jupyterhub-gradeservice/blob/main/DevEnvSetup.md) guide for setting up the development environment.
 
 There's an .editorconfig in this repo, please use it while working on it.
 
