@@ -1,10 +1,11 @@
 {
     "require": {
-        "guzzlehttp/guzzle": "^7.4",
-        "firebase/php-jwt": "^6.2"
+        "guzzlehttp/guzzle": "^7.5.0",
+        "firebase/php-jwt": "^6.3.1"
     },
     "config": {
         "platform-check": false
-    }
-
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
