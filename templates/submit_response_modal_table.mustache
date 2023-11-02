@@ -52,35 +52,33 @@ along with Moodle. If not, see
     }
 }}
 
-<body>
-    <div data-element="mod_jupyter/placeholder">
+<div data-element="mod_jupyter/placeholder">
+    {{^error}}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">{{#str}}submitmodaltablequestionnr,mod_jupyter{{/str}}</th>
+                <th scope="col">{{#str}}submitmodaltablereached,mod_jupyter{{/str}}</th>
+                <th scope="col">{{#str}}submitmodaltablemax,mod_jupyter{{/str}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#points}}
+            <tr>
+                <th scope="row">{{question}}</th>
+                <td>{{reached}}</td>
+                <td>{{max}}</td>
+            </tr>
+            {{/points}}
+        </tbody>
+    </table>
+    {{/error}}
+    <div>
         {{^error}}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">{{#str}}submitmodaltablequestionnr,mod_jupyter{{/str}}</th>
-                    <th scope="col">{{#str}}submitmodaltablereached,mod_jupyter{{/str}}</th>
-                    <th scope="col">{{#str}}submitmodaltablemax,mod_jupyter{{/str}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#points}}
-                <tr>
-                    <th scope="row">{{question}}</th>
-                    <td>{{reached}}</td>
-                    <td>{{max}}</td>
-                </tr>
-                {{/points}}
-            </tbody>
-        </table>
+        {{#str}}submitmodalbodytext,mod_jupyter,{{{gradelink}}}{{/str}}
         {{/error}}
-        <div>
-            {{^error}}
-            {{#str}}submitmodalbodytext,mod_jupyter,{{{gradelink}}}{{/str}}
-            {{/error}}
-            {{#error}}
-            {{errormessage}}
-            {{/error}}
-        </div>
+        {{#error}}
+        {{errormessage}}
+        {{/error}}
     </div>
-</body>
+</div>
