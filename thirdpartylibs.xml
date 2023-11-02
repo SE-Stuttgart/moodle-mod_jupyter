@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <libraries>
   <library>
-    <location>vendor/firebase/php-jwt</location>
+    <location>vendor/composer</location>
     <name>composer/root</name>
     <version>dev-main</version>
     <license>MIT type</license>
