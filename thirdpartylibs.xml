@@ -2,6 +2,20 @@
 <libraries>
   <library>
     <location>vendor/firebase/php-jwt</location>
+    <name>composer/root</name>
+    <version>dev-main</version>
+    <license>MIT type</license>
+    <licenseversion/>
+  </library>
+  <library>
+    <location>vendor/autoload.php</location>
+    <name>composer/autoload</name>
+    <version>dev-main</version>
+    <license>MIT type</license>
+    <licenseversion/>
+  </library>
+  <library>
+    <location>vendor/firebase/php-jwt</location>
     <name>firebase/php-jwt</name>
     <version>v6.9.0</version>
     <license>BSD-3-Clause</license>

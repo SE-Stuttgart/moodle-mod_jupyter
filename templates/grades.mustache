@@ -15,28 +15,50 @@
     along with Moodle. If not, see
     <http: //www.gnu.org/licenses />.
 }}
+{{!
+    @template mod_jupyter/grades
 
-<body>
-    <div>
-        <h1>Results</h1>
-        <ul class="list-group">
-            {{#grade_overview}}
-            <li class="list-group-item">
-                <b>Question {{questionnr}}</b>: {{points}} / {{maxpoints}} points
-                <a class="btn btn-primary float-right" data-toggle="collapse" href="#collapseOutput-{{questionnr}}" role="button" aria-expanded="false" aria-controls="collapseOutput-{{questionnr}}">
-                    View output
-                </a>
-                <div class="collapse w-75" style="height: 200px" id="collapseOutput-{{questionnr}}">
-                    <div class="card card-body output">{{output}}</div>
-                </div>
-            </li>
-            {{/grade_overview}}
-        </ul>
-    </div>
-</body>
+    Classes required for JS:
+    * none
 
-<style>
-    .output {
-        white-space: pre-wrap;
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * none
+
+    Example context (json):
+    {
+        "grade_overview": [
+            {
+                "questionnr": 1,
+                "points": 0.0,
+                "maxpoints": 100.0,
+                "output": "otto grader output"
+            },
+            {
+                "questionnr": 2,
+                "points": 0.0,
+                "maxpoints": 100.0,
+                "output": "output"
+            }
+        ]
     }
-</style>
+}}
+
+<div>
+    <h1>Results</h1>
+    <ul class="list-group">
+        {{#grade_overview}}
+        <li class="list-group-item">
+            <b>Question {{questionnr}}</b>: {{points}} / {{maxpoints}} points
+            <a class="btn btn-primary float-right" data-toggle="collapse" href="#collapseOutput-{{questionnr}}" role="button" aria-expanded="false" aria-controls="collapseOutput-{{questionnr}}">
+            View output
+            </a>
+            <div class="collapse w-75" style="height: 200px" id="collapseOutput-{{questionnr}}">
+                <div class="card card-body output" style="white-space: pre-wrap;">{{output}}</div>
+            </div>
+        </li>
+        {{/grade_overview}}
+    </ul>
+</div>

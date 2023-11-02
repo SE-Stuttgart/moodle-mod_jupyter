@@ -48,7 +48,7 @@ class submit_notebook extends \external_api {
             'courseid' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'module course id'),
             'instanceid' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'module instance id'),
             'filename' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'notebook file name'),
-            'token' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'Gradeservice JWT')
+            'token' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'Gradeservice JWT'),
         ]);
     }
 
@@ -65,11 +65,11 @@ class submit_notebook extends \external_api {
     public static function execute(string $user, int $courseid, int $instanceid, string $filename, string $token) : array {
         global $DB, $USER;
 
-        $points = array();
+        $points = [];
 
         try {
             gradeservice::submit_assignment($user, $courseid, $instanceid, $filename, $token);
-            $questions = $DB->get_records('jupyter_questions_points', array('jupyter' => $instanceid, 'userid' => $USER->id), '');
+            $questions = $DB->get_records('jupyter_questions_points', ['jupyter' => $instanceid, 'userid' => $USER->id], '');
         } catch (ConnectException $e) {
             $error = new stdClass;
             $error->errormessage = get_string('gradeservice_submit_connect_err', 'jupyter');
@@ -103,7 +103,7 @@ class submit_notebook extends \external_api {
             $point->max = floatval(
                 $DB->get_record(
                     'jupyter_questions',
-                    array('jupyter' => $instanceid, 'questionnr' => $question->questionnr),
+                    ['jupyter' => $instanceid, 'questionnr' => $question->questionnr],
                     'maxpoints', MUST_EXIST)->maxpoints
             );
             array_push($points, $point);

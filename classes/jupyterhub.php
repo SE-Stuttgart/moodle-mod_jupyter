@@ -82,7 +82,7 @@ class jupyterhub {
                         'type' => 'file',
                         'format' => 'base64',
                         'content' => base64_encode($file->get_content()),
-                    ]
+                    ],
                 ]);
             } else {
                 throw $e;
@@ -146,15 +146,15 @@ class jupyterhub {
         try {
             $client->patch($route, [
                 'json' => [
-                    'path' => "{$courseid}/{$instanceid}/" . date('Y-m-d-H:i:s', time()) . "_{$filename}"
-                ]
+                    'path' => "{$courseid}/{$instanceid}/" . date('Y-m-d-H:i:s', time()) . "_{$filename}",
+                ],
             ]);
             $client->put($route, [
                 'json' => [
                     'type' => 'file',
                     'format' => 'base64',
                     'content' => base64_encode($file->get_content()),
-                ]
+                ],
             ]);
         } catch (RequestException $e) {
             if ($e->hasResponse() && $e->getCode() == 404) {
@@ -163,7 +163,7 @@ class jupyterhub {
                         'type' => 'file',
                         'format' => 'base64',
                         'content' => base64_encode($file->get_content()),
-                    ]
+                    ],
                 ]);
             } else {
                 throw $e;
@@ -190,8 +190,8 @@ class jupyterhub {
             'query' => [
                 'content' => '1',
                 'format' => 'base64',
-                'type' => 'file'
-            ]
+                'type' => 'file',
+            ],
         ]);
         $res = json_decode($res->getBody(), true);
         return base64_decode($res['content']);

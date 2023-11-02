@@ -1,6 +1,5 @@
-composer.json
-composer.lock
+Dockerfile
 create_thirdpartylibs_xml.Dockerfile
 create_thirdpartylibs_xml.php
-Dockerfile
 Makefile
+thirdpartylibs_extra.xml

@@ -42,7 +42,7 @@ class error_handler {
         if (has_capability('mod/jupyter:viewerrordetails', $modulecontext)) {
                 notification::error(get_string('jupyter_connect_err_admin', 'jupyter', [
                     'url' => get_config('mod_jupyter', 'jupyterhub_url'),
-                    'msg' => $msg
+                    'msg' => $msg,
                 ]));
         } else {
             notification::error(get_string('jupyter_connect_err', 'jupyter'));
@@ -58,7 +58,7 @@ class error_handler {
         if (has_capability('mod/jupyter:viewerrordetails', $modulecontext)) {
             notification::error(get_string('jupyter_resp_err_admin', 'jupyter', [
                 'url' => get_config('mod_jupyter', 'jupyterhub_url'),
-                'msg' => $msg
+                'msg' => $msg,
             ]));
         } else {
             notification::error(get_string('jupyter_resp_err', 'jupyter'));
@@ -74,7 +74,7 @@ class error_handler {
         if (has_capability('mod/jupyter:viewerrordetails', $modulecontext)) {
             notification::error(get_string('gradeservice_connect_err_admin', 'jupyter', [
                 'url' => get_config('mod_jupyter', 'gradeservice_url'),
-                'msg' => $msg
+                'msg' => $msg,
             ]));
         } else {
             notification::error(get_string('gradeservice_connect_err', 'jupyter'));
@@ -90,7 +90,7 @@ class error_handler {
         if (has_capability('mod/jupyter:viewerrordetails', $modulecontext)) {
             notification::error(get_string('gradeservice_resp_err_admin', 'jupyter', [
                 'url' => get_config('mod_jupyter', 'gradeservice_url'),
-                'msg' => $msg
+                'msg' => $msg,
             ]));
         } else {
             notification::error(get_string('gradeservice_resp_err', 'jupyter'));

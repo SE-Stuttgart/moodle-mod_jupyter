@@ -16,34 +16,40 @@ along with Moodle. If not, see
 <http: //www.gnu.org/licenses />.
 }}
 {{!
-@template mod_jupyter/submit_response_modal_table
+    @template mod_jupyter/submit_response_modal_table
 
-Table for showing submit response points after grading.
+    Table for showing submit response points after grading.
 
-Classes required for JS:
-* none
+    Classes required for JS:
+    * none
 
-Data attributes required for JS:
-* none
+    Data attributes required for JS:
+    * none
 
-Context variables required for this template:
-* none
+    Context variables required for this template:
+    * none
 
-Example context (json):
-{
-"points": [
-{
-"question": "1"
-"reached": "5",
-"max": "10"
-},
-{
-"question": "2"
-"reached": "9",
-"max": "12"
-},
-]
-}
+    Example context (json):
+    {
+        "message": "error message jajadajajajajajajajaaj",
+        "closebutton": 0,
+        "announce": 1,
+        "points": [
+            {
+                "question": "1"
+                "reached": "5",
+                "max": "10"
+            },
+            {
+                "question": "2"
+                "reached": "9",
+                "max": "12"
+            }
+        ],
+        "error": false,
+        "errortype": "",
+        "gradelink": ""
+    }
 }}
 
 <body>

@@ -67,24 +67,24 @@ class gradeservice {
                     'name' => 'file',
                     'contents' => $file->get_content(),
                     'filename' => $filename,
-                ]
-            ]
+                ],
+            ],
         ]);
         $res = json_decode($res->getBody(), true);
 
         $file = base64_decode($res[$filename]);
         $fs->delete_area_files($contextid, 'mod_jupyter', 'assignment');
-        $fileinfo = array(
+        $fileinfo = [
             'contextid' => $contextid,
             'component' => 'mod_jupyter',
             'filearea' => 'assignment',
             'itemid' => 0,
             'filepath' => '/',
-            'filename' => $filename
-        );
+            'filename' => $filename,
+        ];
         $fs->create_file_from_string($fileinfo, $file);
 
-        $questions = array();
+        $questions = [];
         foreach ($res['points'] as $questionnr => $maxpoints) {
             $question = new stdClass();
             $question->jupyter = $jupyter->id;
@@ -122,8 +122,8 @@ class gradeservice {
         $route = "{$baseurl}/{$jupyter->course}/{$jupyter->id}";
         $client->request("DELETE", $route, [
             'headers' => [
-                'Authorization' => $token
-            ]
+                'Authorization' => $token,
+            ],
         ]);
     }
 
@@ -156,12 +156,12 @@ class gradeservice {
                     'name' => 'file',
                     'contents' => $file,
                     'filename' => $filename,
-                ]
-            ]
+                ],
+            ],
         ]);
         $res = json_decode($res->getBody(), true);
 
-        if ($grade = $DB->get_record('jupyter_grades', array('jupyter' => $instanceid, 'userid' => $userid))) {
+        if ($grade = $DB->get_record('jupyter_grades', ['jupyter' => $instanceid, 'userid' => $userid])) {
             $grade->grade = $res['total'];
             $grade->timemodified = time();
 
@@ -177,7 +177,7 @@ class gradeservice {
         }
         self::update_grade($courseid, $instanceid, $grade);
 
-        if ($questions = $DB->get_records('jupyter_questions_points', array('jupyter' => $instanceid, 'userid' => $userid))) {
+        if ($questions = $DB->get_records('jupyter_questions_points', ['jupyter' => $instanceid, 'userid' => $userid])) {
             foreach ($questions as $question) {
                 $question->points = $res['points'][$question->questionnr];
                 $question->output = $res['output'][$question->questionnr];
@@ -185,7 +185,7 @@ class gradeservice {
                 $DB->update_record('jupyter_questions_points', $question);
             }
         } else {
-            $questions = array();
+            $questions = [];
 
             foreach ($res['points'] as $questionnr => $points) {
                 $question = new stdClass();
@@ -214,7 +214,7 @@ class gradeservice {
         global $CFG;
         require_once($CFG->libdir.'/gradelib.php');
 
-        $grades = array();
+        $grades = [];
         $gradeobject = new stdClass();
         $gradeobject->userid = $grade->userid;
         $gradeobject->rawgrade = $grade->grade;

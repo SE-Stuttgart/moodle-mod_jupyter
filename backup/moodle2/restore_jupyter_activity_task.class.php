@@ -52,10 +52,10 @@ class restore_jupyter_activity_task extends restore_activity_task {
      * @return array.
      */
     public static function define_decode_contents() {
-        $contents = array();
+        $contents = [];
 
         // Define the contents.
-        $contents[] = new restore_decode_content('jupyter', array('intro'), 'jupyter');
+        $contents[] = new restore_decode_content('jupyter', ['intro'], 'jupyter');
 
         return $contents;
     }
@@ -66,7 +66,7 @@ class restore_jupyter_activity_task extends restore_activity_task {
      * @return restore_decode_rule[].
      */
     public static function define_decode_rules() {
-        $rules = array();
+        $rules = [];
 
         $rules[] = new restore_decode_rule('JUPYTERVIEWBYID', '/mod/jupyter/view.php?id=$1', 'course_module');
         $rules[] = new restore_decode_rule('JUPYTERINDEX', '/mod/jupyter/index.php?id=$1', 'course');
@@ -82,7 +82,7 @@ class restore_jupyter_activity_task extends restore_activity_task {
      * @return restore_log_rule[].
      */
     public static function define_restore_log_rules() {
-        $rules = array();
+        $rules = [];
 
         $rules[] = new restore_log_rule('jupyter', 'add', 'view.php?id={course_module}', '{jupyter}');
         $rules[] = new restore_log_rule('jupyter', 'update', 'view.php?id={course_module}', '{jupyter}');
@@ -102,7 +102,7 @@ class restore_jupyter_activity_task extends restore_activity_task {
      * activity level. All them are rules not linked to any module instance (cmid = 0).
      */
     public static function define_restore_log_rules_for_course() {
-        $rules = array();
+        $rules = [];
 
         // Fix old wrong uses (missing extension).
         $rules[] = new restore_log_rule('jupyter', 'view all', 'index?id={course}', null, null, null,
