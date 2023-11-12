@@ -10,7 +10,7 @@ export const submitNotebook = (user, courseid, instanceid, filename, token) =>
             filename,
             token
         },
-    }, ])[0];
+    },])[0];
 
 export const resetNotebook = (user, contextid, courseid, instanceid, autograded) =>
     fetchMany([{
@@ -22,4 +22,4 @@ export const resetNotebook = (user, contextid, courseid, instanceid, autograded)
             instanceid,
             autograded
         },
-    }, ])[0];
+    },])[0];
