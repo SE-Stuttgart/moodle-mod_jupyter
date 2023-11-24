@@ -130,7 +130,7 @@ if ($jupyter->notebook_ready) {
 
         $PAGE->requires->js_call_amd('mod_jupyter/startup', 'init', [
             [
-                'login' => $jupyterhuburl. $notebookpath . "?auth_token=" . $jwt,
+                'login' => $jupyterhuburl . $notebookpath . "?auth_token=" . $jwt,
                 'autograded' => $jupyter->autograded,
             ],
         ]);
@@ -139,7 +139,7 @@ if ($jupyter->notebook_ready) {
         error_handler::jupyter_resp_err($msg, $modulecontext);
     } catch (ConnectException $e) {
         error_handler::jupyter_connect_err("{$e->getCode()}: {$e->getMessage()}", $modulecontext);
-    } finally{
+    } finally {
         $PAGE->requires->js_call_amd('mod_jupyter/startup', 'cancelStartup', [['isLoading' => false]]);
     }
 }
