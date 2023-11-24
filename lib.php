@@ -113,9 +113,10 @@ function jupyter_delete_instance(int $id) {
             gradeservice::delete_assignment($jupyter);
         }
     } catch (Exception $e) {
-        debugging(print_r($e, true));
-        debugging("Error while deleting autograder instance."
-            . " You may need to delete this grade instance manually. Instance to Delete:" . print_r($jupyter, true));
+        debugging(json_encode($e, JSON_PRETTY_PRINT));
+        debugging("Error while deleting autograder instance. "
+            . "You may need to delete this grade instance manually. Instance to Delete: "
+            . json_encode($jupyter, JSON_PRETTY_PRINT));
     }
 
     $DB->delete_records('jupyter', ['id' => $id]);

@@ -136,7 +136,13 @@ class gradeservice {
      * @param string $filename name of the submitted notebook file
      * @param string $token Gradeservice authorization JWT
      */
-    public static function submit_assignment(string $user, int $courseid, int $instanceid, string $filename, string $token): string {
+    public static function submit_assignment(
+        string $user,
+        int $courseid,
+        int $instanceid,
+        string $filename,
+        string $token
+    ): string {
         global $CFG, $DB, $USER;
         $userid = $USER->id;
         require_once($CFG->libdir . '/gradelib.php');
