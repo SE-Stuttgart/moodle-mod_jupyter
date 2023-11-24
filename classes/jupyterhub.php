@@ -53,8 +53,7 @@ class jupyterhub {
      * @throws ConnectException
      * @throws RequestException
      */
-    public static function load_notebook(string $user, int $contextid, int $courseid, int $instanceid, int $autograded)
-    : string {
+    public static function load_notebook(string $user, int $contextid, int $courseid, int $instanceid, int $autograded): string {
         self::check_user_status($user);
 
         $fs = get_file_storage();
@@ -139,7 +138,7 @@ class jupyterhub {
         $file = reset($files);
         $filename = $file->get_filename();
 
-        $client = new Client([ 'headers' => ['Authorization' => 'token ' . get_config('mod_jupyter', 'jupyterhub_api_token')]]);
+        $client = new Client(['headers' => ['Authorization' => 'token ' . get_config('mod_jupyter', 'jupyterhub_api_token')]]);
         $baseurl = self::get_url();
         $route = "{$baseurl}/user/{$user}/api/contents/{$courseid}/{$instanceid}/{$filename}";
 
@@ -202,7 +201,7 @@ class jupyterhub {
      * @return string $baseurl
      */
     private static function get_url(): string {
-        $baseurl = get_config('mod_jupyter', 'jupyterhub_url');
+        $baseurl = get_config('mod_jupyter', 'jupyterhub_api_url');
 
         if (getenv('IS_CONTAINER') == 'yes') {
             $baseurl = str_replace(['127.0.0.1', 'localhost'], 'host.docker.internal', $baseurl);

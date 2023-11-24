@@ -46,7 +46,7 @@ class gradeservice {
      * @param string $token authorization token
      * @return string filename of the created assignment
      */
-    public static function create_assignment(stdClass $jupyter, int $contextid, string $token) : string {
+    public static function create_assignment(stdClass $jupyter, int $contextid, string $token): string {
         global $DB;
 
         $fs = get_file_storage();
@@ -136,11 +136,10 @@ class gradeservice {
      * @param string $filename name of the submitted notebook file
      * @param string $token Gradeservice authorization JWT
      */
-    public static function submit_assignment(string $user, int $courseid, int $instanceid, string $filename, string $token)
-    : string {
+    public static function submit_assignment(string $user, int $courseid, int $instanceid, string $filename, string $token): string {
         global $CFG, $DB, $USER;
         $userid = $USER->id;
-        require_once($CFG->libdir.'/gradelib.php');
+        require_once($CFG->libdir . '/gradelib.php');
 
         $file = jupyterhub::get_notebook($user, $courseid, $instanceid, $filename);
 
@@ -212,7 +211,7 @@ class gradeservice {
      */
     private static function update_grade(int $courseid, int $instanceid, stdClass $grade) {
         global $CFG;
-        require_once($CFG->libdir.'/gradelib.php');
+        require_once($CFG->libdir . '/gradelib.php');
 
         $grades = [];
         $gradeobject = new stdClass();
@@ -230,7 +229,7 @@ class gradeservice {
      * @return string $baseurl
      */
     private static function get_url(): string {
-        $baseurl = get_config('mod_jupyter', 'gradeservice_url');
+        $baseurl = get_config('mod_jupyter', 'gradeservice_api_url');
 
         if (getenv('IS_CONTAINER') == 'yes') {
             $baseurl = str_replace(['127.0.0.1', 'localhost'], 'host.docker.internal', $baseurl);
