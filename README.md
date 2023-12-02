@@ -10,38 +10,20 @@ A quick introduction for writing assignments in the Otter-Grader format and a de
 [AutograderNotebook.md](documentation/AutograderNotebook.md)  
 [demo.ipynb](documentation/demo.ipynb)
 
-## Plugin Installation
+## Plugin Settings
 
-**Make sure you have a compatible JupyterHub and Grading API running and reachable.  
-Details on how to set this up can be found here: https://github.com/SE-Stuttgart/jupyterhub-gradeservice/tree/main**
+On installation of the plugin, you are prompted to enter the following settings.
 
-Download the latest version of this plugin [here](https://github.com/SE-Stuttgart/moodle-mod_jupyter/releases/tag/1.0.0/) and add it to your Moodle installation.
-
-### Manual installation
-
-1. Clone this repository:
-
-   ```shell
-   git clone git@github.com:SE-Stuttgart/moodle-mod_jupyter.git jupyter
-   ```
-
-   (The folder name should be jupyter not moodle-mod_jupyter)
-
-1. Add third-party dependencies with [composer](https://getcomposer.org/download/):
-
-   ```shell
-   cd jupyter && composer install
-   ```
-
-1. Add the folder to your moodle installation.
-
-## Development Environment Setup
-
-Follow [this](https://github.com/SE-Stuttgart/jupyterhub-gradeservice/blob/main/DevEnvSetup.md) guide for setting up the development environment.
-
-There's an .editorconfig in this repo, please use it while working on it.
-
-[EditorConfig VS Code Extension](vscode://extension/EditorConfig.EditorConfig)
+### JupyterHub URL
+This is the base url *(default: http://localhost:8000/jhub)* of the JupyterHub. This url will be used to embed the Jupyter Notebook via iFrame.
+### JupyterHub API URL
+This is the base url *(default for docker: http://jupyterhub:8000/jhub)* of the JupyterHub REST API. This url will be used to connect and use the jupyterhub api.
+### Gradeservice API URL
+This is the base url *(default for docker: http://gradeservice:5000)* of the Gradeservice REST API. This url will be used to connect and use the gradeservice api.
+### Jupyterhub JWT Secret
+This is necessary for authentification and communication with JupyterHub. It must match with the one set in JupyterHub. Please do not use the default one.
+### Jupyterhub API Token
+This is necessary for authentification and communication with JupyterHub. It must match with the one set in JupyterHub. Please do not use the default one.
 
 ## License
 
