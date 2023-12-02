@@ -46,7 +46,7 @@ class gradeservice {
      * @param string $token authorization token
      * @return string filename of the created assignment
      */
-    public static function create_assignment(stdClass $jupyter, int $contextid, string $token) : string {
+    public static function create_assignment(stdClass $jupyter, int $contextid, string $token): string {
         global $DB;
 
         $fs = get_file_storage();
@@ -67,24 +67,24 @@ class gradeservice {
                     'name' => 'file',
                     'contents' => $file->get_content(),
                     'filename' => $filename,
-                ]
-            ]
+                ],
+            ],
         ]);
         $res = json_decode($res->getBody(), true);
 
         $file = base64_decode($res[$filename]);
         $fs->delete_area_files($contextid, 'mod_jupyter', 'assignment');
-        $fileinfo = array(
+        $fileinfo = [
             'contextid' => $contextid,
             'component' => 'mod_jupyter',
             'filearea' => 'assignment',
             'itemid' => 0,
             'filepath' => '/',
-            'filename' => $filename
-        );
+            'filename' => $filename,
+        ];
         $fs->create_file_from_string($fileinfo, $file);
 
-        $questions = array();
+        $questions = [];
         foreach ($res['points'] as $questionnr => $maxpoints) {
             $question = new stdClass();
             $question->jupyter = $jupyter->id;
@@ -122,8 +122,8 @@ class gradeservice {
         $route = "{$baseurl}/{$jupyter->course}/{$jupyter->id}";
         $client->request("DELETE", $route, [
             'headers' => [
-                'Authorization' => $token
-            ]
+                'Authorization' => $token,
+            ],
         ]);
     }
 
@@ -136,11 +136,16 @@ class gradeservice {
      * @param string $filename name of the submitted notebook file
      * @param string $token Gradeservice authorization JWT
      */
-    public static function submit_assignment(string $user, int $courseid, int $instanceid, string $filename, string $token)
-    : string {
+    public static function submit_assignment(
+        string $user,
+        int $courseid,
+        int $instanceid,
+        string $filename,
+        string $token
+    ): string {
         global $CFG, $DB, $USER;
         $userid = $USER->id;
-        require_once($CFG->libdir.'/gradelib.php');
+        require_once($CFG->libdir . '/gradelib.php');
 
         $file = jupyterhub::get_notebook($user, $courseid, $instanceid, $filename);
 
@@ -156,12 +161,12 @@ class gradeservice {
                     'name' => 'file',
                     'contents' => $file,
                     'filename' => $filename,
-                ]
-            ]
+                ],
+            ],
         ]);
         $res = json_decode($res->getBody(), true);
 
-        if ($grade = $DB->get_record('jupyter_grades', array('jupyter' => $instanceid, 'userid' => $userid))) {
+        if ($grade = $DB->get_record('jupyter_grades', ['jupyter' => $instanceid, 'userid' => $userid])) {
             $grade->grade = $res['total'];
             $grade->timemodified = time();
 
@@ -177,7 +182,7 @@ class gradeservice {
         }
         self::update_grade($courseid, $instanceid, $grade);
 
-        if ($questions = $DB->get_records('jupyter_questions_points', array('jupyter' => $instanceid, 'userid' => $userid))) {
+        if ($questions = $DB->get_records('jupyter_questions_points', ['jupyter' => $instanceid, 'userid' => $userid])) {
             foreach ($questions as $question) {
                 $question->points = $res['points'][$question->questionnr];
                 $question->output = $res['output'][$question->questionnr];
@@ -185,7 +190,7 @@ class gradeservice {
                 $DB->update_record('jupyter_questions_points', $question);
             }
         } else {
-            $questions = array();
+            $questions = [];
 
             foreach ($res['points'] as $questionnr => $points) {
                 $question = new stdClass();
@@ -212,9 +217,9 @@ class gradeservice {
      */
     private static function update_grade(int $courseid, int $instanceid, stdClass $grade) {
         global $CFG;
-        require_once($CFG->libdir.'/gradelib.php');
+        require_once($CFG->libdir . '/gradelib.php');
 
-        $grades = array();
+        $grades = [];
         $gradeobject = new stdClass();
         $gradeobject->userid = $grade->userid;
         $gradeobject->rawgrade = $grade->grade;
@@ -230,7 +235,7 @@ class gradeservice {
      * @return string $baseurl
      */
     private static function get_url(): string {
-        $baseurl = get_config('mod_jupyter', 'gradeservice_url');
+        $baseurl = get_config('mod_jupyter', 'gradeservice_api_url');
 
         if (getenv('IS_CONTAINER') == 'yes') {
             $baseurl = str_replace(['127.0.0.1', 'localhost'], 'host.docker.internal', $baseurl);

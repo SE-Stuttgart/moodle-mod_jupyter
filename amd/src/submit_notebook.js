@@ -1,5 +1,5 @@
-import { submitNotebook } from "./repository";
-import { exception as displayException } from "core/notification";
+import {submitNotebook} from "./repository";
+import {exception as displayException} from "core/notification";
 import Templates from "core/templates";
 
 const context = {
@@ -27,7 +27,7 @@ const Selectors = {
  * Add event listeners to Selectors.
  * @param {*} param0
  */
-export const init = async ({ user, courseid, instanceid, filename, token, gradelink }) => {
+export const init = async({user, courseid, instanceid, filename, token, gradelink}) => {
   document.addEventListener("click", (e) => {
     if (e.target.closest(Selectors.actions.submitButton)) {
       resetModalBody();
@@ -53,7 +53,7 @@ export const init = async ({ user, courseid, instanceid, filename, token, gradel
  * @param {string} token
  * @param {string} gradelink
  */
-const callSubmitNotebook = async (
+const callSubmitNotebook = async(
   user,
   courseid,
   instanceid,
@@ -91,7 +91,7 @@ const renderErrorNotification = (
 ) => {
   Templates.renderForPromise('core/notification_error', context)
     // It returns a promise that needs to be resoved.
-    .then(({ html, js }) => {
+    .then(({html, js}) => {
       // Here eventually I have my compiled template, and any javascript that it generated.
       // The templates object has append, prepend and replace functions.
       Templates.replaceNodeContents(
@@ -99,6 +99,7 @@ const renderErrorNotification = (
         html,
         js
       );
+      return undefined;
     })
     // Deal with this exception (Using core/notify exception function is recommended).
     .catch((error) => displayException(error));
@@ -111,7 +112,7 @@ const renderModalTable = (
 ) => {
   Templates.renderForPromise("mod_jupyter/submit_response_modal_table", context)
     // It returns a promise that needs to be resoved.
-    .then(({ html, js }) => {
+    .then(({html, js}) => {
       // Here eventually I have my compiled template, and any javascript that it generated.
       // The templates object has append, prepend and replace functions.
       Templates.replaceNodeContents(
@@ -119,6 +120,7 @@ const renderModalTable = (
         html,
         js
       );
+      return undefined;
     })
     // Deal with this exception (Using core/notify exception function is recommended).
     .catch((error) => displayException(error));
@@ -127,11 +129,11 @@ const renderModalTable = (
 /**
  * Replace table with loading template for reset.
  */
-const resetModalBody = async (
+const resetModalBody = async(
 ) => {
   Templates.renderForPromise("mod_jupyter/loading", context)
     // It returns a promise that needs to be resoved.
-    .then(({ html, js }) => {
+    .then(({html, js}) => {
       // Here eventually I have my compiled template, and any javascript that it generated.
       // The templates object has append, prepend and replace functions.
       Templates.replaceNodeContents(
@@ -139,6 +141,7 @@ const resetModalBody = async (
         html,
         js
       );
+      return undefined;
     })
     // Deal with this exception (Using core/notify exception function is recommended).
     .catch((error) => displayException(error));

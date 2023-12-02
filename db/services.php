@@ -46,7 +46,7 @@ $functions = [
             // Specifying this service means that your function will be available for
             // use in the Moodle Mobile App.
             MOODLE_OFFICIAL_MOBILE_SERVICE,
-        ]
+        ],
     ],
         // The name of your web service function, as discussed above.
         'mod_jupyter_reset_notebook' => [
@@ -69,7 +69,7 @@ $functions = [
                 // Specifying this service means that your function will be available for
                 // use in the Moodle Mobile App.
                 MOODLE_OFFICIAL_MOBILE_SERVICE,
-            ]
+            ],
         ],
     ];
 
@@ -95,6 +95,6 @@ $services = [
 
         // Whether to allow file uploads.
         'uploadfiles'  => 0,
-    ]
+    ],
 ];
 

@@ -47,7 +47,7 @@ class mod_jupyter_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         // Adding the standard "name" field.
-        $mform->addElement('text', 'name', get_string('jupytername', 'mod_jupyter'), array('size' => '64'));
+        $mform->addElement('text', 'name', get_string('jupytername', 'mod_jupyter'), ['size' => '64']);
 
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
@@ -73,7 +73,7 @@ class mod_jupyter_mod_form extends moodleform_mod {
 
             // Adding checkbox for whether the assignment should be auto-graded.
             $mform->addElement('advcheckbox', 'autograded', 'Auto-Grading', get_string('autograding', 'mod_jupyter'), '',
-                array(0, 1));
+                [0, 1]);
             $mform->setDefault('autograded', 1);
         }
 

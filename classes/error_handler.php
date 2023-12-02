@@ -40,10 +40,10 @@ class error_handler {
      */
     public static function jupyter_connect_err(string $msg, context_module $modulecontext) {
         if (has_capability('mod/jupyter:viewerrordetails', $modulecontext)) {
-                notification::error(get_string('jupyter_connect_err_admin', 'jupyter', [
-                    'url' => get_config('mod_jupyter', 'jupyterhub_url'),
-                    'msg' => $msg
-                ]));
+            notification::error(get_string('jupyter_connect_err_admin', 'jupyter', [
+                'url' => get_config('mod_jupyter', 'jupyterhub_api_url'),
+                'msg' => $msg,
+            ]));
         } else {
             notification::error(get_string('jupyter_connect_err', 'jupyter'));
         }
@@ -57,8 +57,8 @@ class error_handler {
     public static function jupyter_resp_err(string $msg, context_module $modulecontext) {
         if (has_capability('mod/jupyter:viewerrordetails', $modulecontext)) {
             notification::error(get_string('jupyter_resp_err_admin', 'jupyter', [
-                'url' => get_config('mod_jupyter', 'jupyterhub_url'),
-                'msg' => $msg
+                'url' => get_config('mod_jupyter', 'jupyterhub_api_url'),
+                'msg' => $msg,
             ]));
         } else {
             notification::error(get_string('jupyter_resp_err', 'jupyter'));
@@ -73,8 +73,8 @@ class error_handler {
     public static function gradeservice_connect_err(string $msg, context_module $modulecontext) {
         if (has_capability('mod/jupyter:viewerrordetails', $modulecontext)) {
             notification::error(get_string('gradeservice_connect_err_admin', 'jupyter', [
-                'url' => get_config('mod_jupyter', 'gradeservice_url'),
-                'msg' => $msg
+                'url' => get_config('mod_jupyter', 'gradeservice_api_url'),
+                'msg' => $msg,
             ]));
         } else {
             notification::error(get_string('gradeservice_connect_err', 'jupyter'));
@@ -89,8 +89,8 @@ class error_handler {
     public static function gradeservice_resp_err(string $msg, context_module $modulecontext) {
         if (has_capability('mod/jupyter:viewerrordetails', $modulecontext)) {
             notification::error(get_string('gradeservice_resp_err_admin', 'jupyter', [
-                'url' => get_config('mod_jupyter', 'gradeservice_url'),
-                'msg' => $msg
+                'url' => get_config('mod_jupyter', 'gradeservice_api_url'),
+                'msg' => $msg,
             ]));
         } else {
             notification::error(get_string('gradeservice_resp_err', 'jupyter'));

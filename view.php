@@ -32,7 +32,7 @@ use GuzzleHttp\Exception\RequestException;
 use mod_jupyter\error_handler;
 use mod_jupyter\jupyterhub;
 use mod_jupyter\gradeservice;
-use \moodle_url;
+use moodle_url;
 
 // Moodle specific config.
 global $DB, $PAGE, $USER, $OUTPUT;
@@ -45,11 +45,11 @@ $j = optional_param('j', 0, PARAM_INT);
 
 if ($id) {
     $cm = get_coursemodule_from_id('jupyter', $id, 0, false, MUST_EXIST);
-    $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $jupyter = $DB->get_record('jupyter', array('id' => $cm->instance), '*', MUST_EXIST);
+    $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+    $jupyter = $DB->get_record('jupyter', ['id' => $cm->instance], '*', MUST_EXIST);
 } else {
-    $jupyter = $DB->get_record('jupyter', array('id' => $j), '*', MUST_EXIST);
-    $course = $DB->get_record('course', array('id' => $jupyter->course), '*', MUST_EXIST);
+    $jupyter = $DB->get_record('jupyter', ['id' => $j], '*', MUST_EXIST);
+    $course = $DB->get_record('course', ['id' => $jupyter->course], '*', MUST_EXIST);
     $cm = get_coursemodule_from_instance('jupyter', $jupyter->id, $course->id, false, MUST_EXIST);
 }
 
@@ -57,7 +57,7 @@ require_login($course, true, $cm);
 
 $modulecontext = context_module::instance($cm->id);
 
-$PAGE->set_url('/mod/jupyter/view.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/jupyter/view.php', ['id' => $cm->id]);
 $PAGE->set_title(format_string($jupyter->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($modulecontext);
@@ -103,39 +103,43 @@ if ($jupyter->notebook_ready) {
 
         if ($jupyter->autograded) {
             // Create link to user's gradebook.
-            $gradelink = new moodle_url('grade.php', array('id' => $cm->id, 'userid' => $USER->id));
+            $gradelink = new moodle_url('grade.php', ['id' => $cm->id, 'userid' => $USER->id]);
             $gradelink = $gradelink->__toString();
 
-            $PAGE->requires->js_call_amd('mod_jupyter/submit_notebook', 'init', [[
-                'user' => $user,
-                'courseid' => $course->id,
-                'instanceid' => $jupyter->id,
-                'filename' => $jupyter->notebook_filename,
-                'token' => $jwt,
-                'gradelink' => $gradelink
-                ]]
-            );
+            $PAGE->requires->js_call_amd('mod_jupyter/submit_notebook', 'init', [
+                [
+                    'user' => $user,
+                    'courseid' => $course->id,
+                    'instanceid' => $jupyter->id,
+                    'filename' => $jupyter->notebook_filename,
+                    'token' => $jwt,
+                    'gradelink' => $gradelink,
+                ],
+            ]);
         }
 
-        $PAGE->requires->js_call_amd('mod_jupyter/reset_notebook', 'init', [[
-            'user' => $user,
-            'contextid' => $modulecontext->id,
-            'courseid' => $course->id,
-            'instanceid' => $jupyter->id,
-            'autograded' => $jupyter->autograded
-            ]]
-        );
+        $PAGE->requires->js_call_amd('mod_jupyter/reset_notebook', 'init', [
+            [
+                'user' => $user,
+                'contextid' => $modulecontext->id,
+                'courseid' => $course->id,
+                'instanceid' => $jupyter->id,
+                'autograded' => $jupyter->autograded,
+            ],
+        ]);
 
-        $PAGE->requires->js_call_amd('mod_jupyter/startup', 'init', [[
-            'login' => $jupyterhuburl. $notebookpath . "?auth_token=" . $jwt,
-            'autograded' => $jupyter->autograded
-            ]]);
+        $PAGE->requires->js_call_amd('mod_jupyter/startup', 'init', [
+            [
+                'login' => $jupyterhuburl . $notebookpath . "?auth_token=" . $jwt,
+                'autograded' => $jupyter->autograded,
+            ],
+        ]);
     } catch (RequestException $e) {
         $msg = $e->hasResponse() ? "{$e->getResponse()->getBody()->getContents()}" : "{$e->getCode()}: {$e->getMessage()}";
         error_handler::jupyter_resp_err($msg, $modulecontext);
     } catch (ConnectException $e) {
         error_handler::jupyter_connect_err("{$e->getCode()}: {$e->getMessage()}", $modulecontext);
-    } finally{
+    } finally {
         $PAGE->requires->js_call_amd('mod_jupyter/startup', 'cancelStartup', [['isLoading' => false]]);
     }
 }

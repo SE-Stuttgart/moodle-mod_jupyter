@@ -34,7 +34,7 @@ class restore_jupyter_activity_structure_step extends restore_activity_structure
      */
     protected function define_structure() {
 
-        $paths = array();
+        $paths = [];
 
         $paths[] = new restore_path_element('jupyter', '/activity/jupyter');
 

@@ -53,8 +53,7 @@ class jupyterhub {
      * @throws ConnectException
      * @throws RequestException
      */
-    public static function load_notebook(string $user, int $contextid, int $courseid, int $instanceid, int $autograded)
-    : string {
+    public static function load_notebook(string $user, int $contextid, int $courseid, int $instanceid, int $autograded): string {
         self::check_user_status($user);
 
         $fs = get_file_storage();
@@ -82,7 +81,7 @@ class jupyterhub {
                         'type' => 'file',
                         'format' => 'base64',
                         'content' => base64_encode($file->get_content()),
-                    ]
+                    ],
                 ]);
             } else {
                 throw $e;
@@ -139,22 +138,22 @@ class jupyterhub {
         $file = reset($files);
         $filename = $file->get_filename();
 
-        $client = new Client([ 'headers' => ['Authorization' => 'token ' . get_config('mod_jupyter', 'jupyterhub_api_token')]]);
+        $client = new Client(['headers' => ['Authorization' => 'token ' . get_config('mod_jupyter', 'jupyterhub_api_token')]]);
         $baseurl = self::get_url();
         $route = "{$baseurl}/user/{$user}/api/contents/{$courseid}/{$instanceid}/{$filename}";
 
         try {
             $client->patch($route, [
                 'json' => [
-                    'path' => "{$courseid}/{$instanceid}/" . date('Y-m-d-H:i:s', time()) . "_{$filename}"
-                ]
+                    'path' => "{$courseid}/{$instanceid}/" . date('Y-m-d-H:i:s', time()) . "_{$filename}",
+                ],
             ]);
             $client->put($route, [
                 'json' => [
                     'type' => 'file',
                     'format' => 'base64',
                     'content' => base64_encode($file->get_content()),
-                ]
+                ],
             ]);
         } catch (RequestException $e) {
             if ($e->hasResponse() && $e->getCode() == 404) {
@@ -163,7 +162,7 @@ class jupyterhub {
                         'type' => 'file',
                         'format' => 'base64',
                         'content' => base64_encode($file->get_content()),
-                    ]
+                    ],
                 ]);
             } else {
                 throw $e;
@@ -190,8 +189,8 @@ class jupyterhub {
             'query' => [
                 'content' => '1',
                 'format' => 'base64',
-                'type' => 'file'
-            ]
+                'type' => 'file',
+            ],
         ]);
         $res = json_decode($res->getBody(), true);
         return base64_decode($res['content']);
@@ -202,7 +201,7 @@ class jupyterhub {
      * @return string $baseurl
      */
     private static function get_url(): string {
-        $baseurl = get_config('mod_jupyter', 'jupyterhub_url');
+        $baseurl = get_config('mod_jupyter', 'jupyterhub_api_url');
 
         if (getenv('IS_CONTAINER') == 'yes') {
             $baseurl = str_replace(['127.0.0.1', 'localhost'], 'host.docker.internal', $baseurl);

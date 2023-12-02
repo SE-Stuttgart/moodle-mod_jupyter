@@ -23,6 +23,7 @@
  */
 
 use mod_jupyter\gradeservice;
+
 /**
  * Return if the plugin supports $feature.
  *
@@ -102,19 +103,26 @@ function jupyter_update_instance(stdClass $data) {
 function jupyter_delete_instance(int $id) {
     global $DB;
 
-    $jupyter = $DB->get_record('jupyter', array('id' => $id));
+    $jupyter = $DB->get_record('jupyter', ['id' => $id]);
     if (!$jupyter) {
         return false;
     }
 
-    if ($jupyter->autograded) {
-        gradeservice::delete_assignment($jupyter);
+    try {
+        if ($jupyter->autograded) {
+            gradeservice::delete_assignment($jupyter);
+        }
+    } catch (Exception $e) {
+        debugging(json_encode($e, JSON_PRETTY_PRINT));
+        debugging("Error while deleting autograder instance. "
+            . "You may need to delete this grade instance manually. Instance to Delete: "
+            . json_encode($jupyter, JSON_PRETTY_PRINT));
     }
 
-    $DB->delete_records('jupyter', array('id' => $id));
-    $DB->delete_records('jupyter_grades', array('jupyter' => $id));
-    $DB->delete_records('jupyter_questions', array('jupyter' => $id));
-    $DB->delete_records('jupyter_questions_points', array('jupyter' => $id));
+    $DB->delete_records('jupyter', ['id' => $id]);
+    $DB->delete_records('jupyter_grades', ['jupyter' => $id]);
+    $DB->delete_records('jupyter_questions', ['jupyter' => $id]);
+    $DB->delete_records('jupyter_questions_points', ['jupyter' => $id]);
 
     return true;
 }
@@ -132,8 +140,14 @@ function jupyter_set_mainfile(stdClass $data): void {
     if (!empty($data->packagefile)) {
         $fs = get_file_storage();
         $fs->delete_area_files($context->id, 'mod_jupyter', 'package');
-        file_save_draft_area_files($data->packagefile, $context->id, 'mod_jupyter', 'package',
-            0, ['subdirs' => 0, 'maxfiles' => 1]);
+        file_save_draft_area_files(
+            $data->packagefile,
+            $context->id,
+            'mod_jupyter',
+            'package',
+            0,
+            ['subdirs' => 0, 'maxfiles' => 1]
+        );
 
         $files = $fs->get_area_files($context->id, 'mod_jupyter', 'package', 0, 'id', false);
         $file = reset($files);
@@ -151,11 +165,11 @@ function jupyter_set_mainfile(stdClass $data): void {
  * @param bool $reset Reset grades in the gradebook.
  * @return void.
  */
-function jupyter_grade_item_update($jupyter, $reset=false) {
+function jupyter_grade_item_update($jupyter, $reset = false) {
     global $CFG;
-    require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->libdir . '/gradelib.php');
 
-    $item = array();
+    $item = [];
     $item['itemname'] = clean_param($jupyter->name, PARAM_NOTAGS);
     $item['gradetype'] = GRADE_TYPE_VALUE;
 
@@ -184,10 +198,18 @@ function jupyter_grade_item_update($jupyter, $reset=false) {
  */
 function jupyter_grade_item_delete($jupyter) {
     global $CFG;
-    require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->libdir . '/gradelib.php');
 
-    return grade_update('/mod/jupyter', $jupyter->course, 'mod', 'mod_jupyter',
-                        $jupyter->id, 0, null, array('deleted' => 1));
+    return grade_update(
+        '/mod/jupyter',
+        $jupyter->course,
+        'mod',
+        'mod_jupyter',
+        $jupyter->id,
+        0,
+        null,
+        ['deleted' => 1]
+    );
 }
 
 /**
@@ -201,7 +223,7 @@ function jupyter_grade_item_delete($jupyter) {
  */
 function jupyter_update_grades($jupyter, $userid = 0, $nullifnone = true) {
     global $CFG, $DB;
-    require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->libdir . '/gradelib.php');
 
     // Populate array of grade objects indexed by userid.
     $grades = $DB->get_records('jupyter_grades', ['userid' => $userid]);
