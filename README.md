@@ -13,7 +13,7 @@ A quick introduction for writing assignments in the Otter-Grader format and a de
 ## Installation
 
 Install this plugin by navigating to `Site administration > Plugins > Install Plugins`, then drag the plugin `moodle-mod_jupyter.zip` in the *Install plugin from ZIP file* zone. Press the *Install plugin from the ZIP file* button.
-![Screenshot showing how to install the plugin. Drag the .zip of the plugin in the install plugin zone in the admin settings under install plugin.](https://assets.digitalocean.com/articles/alligator/boo.svg "a title")
+![Screenshot showing how to install the plugin. Drag the .zip of the plugin in the install plugin zone in the admin settings under install plugin.](https://raw.githubusercontent.com/SE-Stuttgart/moodle-mod_jupyter/main/documentation/how_to_install.png)
 
 ## Plugin Settings
 
@@ -36,16 +36,16 @@ This plugin is an activity plugin and can be created like any activity plugin.
 
 1. Activate `Edit mode`.
 2. Click on `Add an Activity or Resource`. Now the activity creation from appears.
-![Screenshot showing the "edit mode" toggle on the top right and the "add an activity or resource" in the center.](https://assets.digitalocean.com/articles/alligator/boo.svg "a title")
+![Screenshot showing the "edit mode" toggle on the top right and the "add an activity or resource" in the center.](https://raw.githubusercontent.com/SE-Stuttgart/moodle-mod_jupyter/main/documentation/how_to_create_activity_1.png)
 3. Enter a name for the notebook activity you want to create.
 4. Drag the .ipynb file for this activity into this field. You can only have one .ipynb file per activity. If you have more files, create multiple activities.
 5. Select if you want to use the automatic gradeservice by Otter-Grader.
-![Screenshot showing the activity creation form. The three described options are displayed.](https://assets.digitalocean.com/articles/alligator/boo.svg "a title")
+![Screenshot showing the activity creation form. The three described options are displayed.](https://raw.githubusercontent.com/SE-Stuttgart/moodle-mod_jupyter/main/documentation/how_to_create_activity_2.png)
 
 ## Use Activity
 
 When the activity is created, you can navigate to it by clicking on it directly or via the hierarchy. The activity view page opens that includes an embedded jupyter notebook for you to work on.
-![Screenshot showing the embedded Notebook.](https://assets.digitalocean.com/articles/alligator/boo.svg "a title")
+![Screenshot showing the embedded Notebook.](https://raw.githubusercontent.com/SE-Stuttgart/moodle-mod_jupyter/main/documentation/how_to_result.png)
 
 ## License
 
