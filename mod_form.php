@@ -63,18 +63,25 @@ class mod_jupyter_mod_form extends moodleform_mod {
         if ($this->_instance == '' || !$this->current->notebook_ready) {
             // Adding file manager for jupyter notebook file.
             $mform->addElement('filemanager', 'packagefile', get_string('package', 'mod_jupyter'), null, [
-            'accepted_types' => '.ipynb',
-            'maxbytes' => 0,
-            'maxfiles' => 1,
-            'subdirs' => 0,
+                'accepted_types' => '.ipynb',
+                'maxbytes' => 0,
+                'maxfiles' => 1,
+                'subdirs' => 0,
             ]);
             $mform->addHelpButton('packagefile', 'package', 'mod_jupyter');
             $mform->addRule('packagefile', null, 'required');
 
             // Adding checkbox for whether the assignment should be auto-graded.
-            $mform->addElement('advcheckbox', 'autograded', 'Auto-Grading', get_string('autograding', 'mod_jupyter'), '',
-                [0, 1]);
-            $mform->setDefault('autograded', 1);
+            $mform->addElement(
+                'advcheckbox',
+                'autograded',
+                'Auto-Grading',
+                get_string('autograding', 'mod_jupyter'),
+                '',
+                [0, 1]
+            );
+            $mform->addHelpButton('autograded', 'autograded_checkbox', 'mod_jupyter');
+            $mform->setDefault('autograded', 0);
         }
 
         // Adding the standard "intro" and "introformat" fields.
@@ -96,8 +103,14 @@ class mod_jupyter_mod_form extends moodleform_mod {
     public function data_preprocessing(&$defaultvalues) {
         // Load existing notebook file into file manager draft area.
         $draftitemid = file_get_submitted_draft_itemid('packagefile');
-        file_prepare_draft_area($draftitemid, $this->context->id, 'mod_jupyter',
-            'package', 0, ['subdirs' => 0, 'maxfiles' => 1]);
+        file_prepare_draft_area(
+            $draftitemid,
+            $this->context->id,
+            'mod_jupyter',
+            'package',
+            0,
+            ['subdirs' => 0, 'maxfiles' => 1]
+        );
         $defaultvalues['packagefile'] = $draftitemid;
     }
 }
