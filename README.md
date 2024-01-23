@@ -21,7 +21,7 @@ On installation of the plugin, you are prompted to enter the following settings.
 
 ### JupyterHub URL
 - This is the base url *(default: http://localhost:8000/jhub)* of the JupyterHub. This url will be used to embed the Jupyter Notebook via iFrame.
-- To access jupyterhub over HTTPS, you need to adjust the url to *(https://&lt;IPv4 address or its DNS that is the SSL certificates issued for!&gt;:443/jhub)*. To serve Jupyter Hub over ```HTTPS``` its configuration is required. For proper ```HTTPS``` configuration check out ***Serving Over HTTPS*** section of the [Jupyter Hub](https://github.com/SE-Stuttgart/jupyterhub-gradeservice/blob/main/README.md) back-end.
+- To access jupyterhub over HTTPS, you need to adjust the url to *(https://&lt;IPv4 address or its DNS which the SSL certificate is issued for!&gt;:443/jhub)*. To serve Jupyter Hub over ```HTTPS``` its configuration is required. For proper ```HTTPS``` configuration check out ***Serving Over HTTPS*** section of the [Jupyter Hub](https://github.com/SE-Stuttgart/jupyterhub-gradeservice/blob/main/README.md) back-end.
 ### JupyterHub API URL
 - This is the base url *(default for docker: http://jupyterhub:8000/jhub)* of the JupyterHub REST API. This url will be used to connect and use the jupyterhub api.
 ### Gradeservice API URL
