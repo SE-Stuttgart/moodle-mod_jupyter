@@ -20,15 +20,17 @@ Install this plugin by navigating to `Site administration > Plugins > Install Pl
 On installation of the plugin, you are prompted to enter the following settings.
 
 ### JupyterHub URL
-This is the base url *(default: http://localhost:8000/jhub)* of the JupyterHub. This url will be used to embed the Jupyter Notebook via iFrame.
+- This is the base url *(default: http://localhost:8000/jhub)* of the JupyterHub. This url will be used to embed the Jupyter Notebook via iFrame.
+- To access jupyterhub over HTTPS, you need to adjust the url to *(https://<IPv4 address or its DNS>:443/jhub)*. To serve Jupyter Hub over ```HTTPS``` its configuration is required. 
+- For proper ```HTTPS``` configuration check out ***Serving Over HTTPS*** section of the [Jupyter Hub](https://github.com/SE-Stuttgart/jupyterhub-gradeservice/blob/main/README.md) back-end
 ### JupyterHub API URL
-This is the base url *(default for docker: http://jupyterhub:8000/jhub)* of the JupyterHub REST API. This url will be used to connect and use the jupyterhub api.
+- This is the base url *(default for docker: http://jupyterhub:8000/jhub)* of the JupyterHub REST API. This url will be used to connect and use the jupyterhub api.
 ### Gradeservice API URL
-This is the base url *(default for docker: http://gradeservice:5000)* of the Gradeservice REST API. This url will be used to connect and use the gradeservice api.
+- This is the base url *(default for docker: http://gradeservice:5000)* of the Gradeservice REST API. This url will be used to connect and use the gradeservice api.
 ### Jupyterhub JWT Secret
-This is necessary for authentification and communication with JupyterHub. It must match with the one set in JupyterHub. Please do not use the default one.
+- This is necessary for authentification and communication with JupyterHub. It must match with the one set in JupyterHub. Please do not use the default one.
 ### Jupyterhub API Token
-This is necessary for authentification and communication with JupyterHub. It must match with the one set in JupyterHub. Please do not use the default one.
+- This is necessary for authentification and communication with JupyterHub. It must match with the one set in JupyterHub. Please do not use the default one.
 
 ## Create Activity
 
