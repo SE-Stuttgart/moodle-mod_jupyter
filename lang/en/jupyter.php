@@ -42,6 +42,7 @@ $string['autograding'] = 'The assignment should be automatically graded.';
 $string['jupyter:addinstance'] = 'Add a new Jupyter Notebook activity';
 $string['jupyter:view'] = 'View a Jupyter Notebook activity';
 $string['jupyter:viewerrordetails'] = 'View extended information on errors occurring in the Jupyter Notebook activity';
+$string['jupyter:managefiles'] = 'Manage files';
 
 // Reset button.
 $string['resetbuttontext'] = 'Reset';

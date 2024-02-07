@@ -42,6 +42,8 @@ $string['autograding'] = 'Die Aufgaben sollen automatisiert benotet werden.';
 $string['jupyter:addinstance'] = 'Eine neue Jupyter Notbook-Aktivität hinzufügen';
 $string['jupyter:view'] = 'Eine Jupyter Notebook-Aktivität anzeigen';
 $string['jupyter:viewerrordetails'] = 'Anzeige erweiterter Informationen zu Fehlern, die in der Jupyter Notebook Aktivität auftreten';
+$string['jupyter:managefiles'] = 'Dokumente verwalten';
+
 
 // Reset button.
 $string['resetbuttontext'] = 'Zurücksetzen';
