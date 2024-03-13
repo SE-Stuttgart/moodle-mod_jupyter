@@ -25,9 +25,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $observers = [
-    [
-        'eventname' => '\core\event\course_module_viewed',
-        'callback' => '\plugintype_pluginname\event\observer\course_module_created::store',
-        'priority' => 1000,
-    ],
+    // [
+    //     'eventname' => '\core\event\course_module_viewed',
+    //     'callback' => '\plugintype_pluginname\event\observer\course_module_created::store',
+    //     'priority' => 1000,
+    // ],
 ];
