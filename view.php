@@ -32,7 +32,6 @@ use GuzzleHttp\Exception\RequestException;
 use mod_jupyter\error_handler;
 use mod_jupyter\jupyterhub;
 use mod_jupyter\gradeservice;
-use moodle_url;
 
 // Moodle specific config.
 global $DB, $PAGE, $USER, $OUTPUT;
@@ -131,6 +130,7 @@ if ($jupyter->notebook_ready) {
         $PAGE->requires->js_call_amd('mod_jupyter/startup', 'init', [
             [
                 'login' => $jupyterhuburl . $notebookpath . "?auth_token=" . $jwt,
+                'logout' => $jupyterhuburl . '/hub/logout',
                 'autograded' => $jupyter->autograded,
             ],
         ]);

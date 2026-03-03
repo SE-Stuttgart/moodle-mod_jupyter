@@ -25,6 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'mod_jupyter';
-$plugin->release = '0.1.0';
-$plugin->version = 2023122001;
-$plugin->requires = 2021051700;
+$plugin->release = '0.2.0';
+$plugin->version = 2026030300;
+$plugin->requires = 2024100700;
+$plugin->supported = [405, 405];

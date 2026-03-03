@@ -40,6 +40,7 @@ if ($hassiteconfig) {
             get_string('jupyterhub_url', 'jupyter'),
             get_string('jupyterhub_url_desc', 'jupyter'),
             'http://localhost:8000/jhub',
+            PARAM_URL
         ));
 
         $settings->add(new admin_setting_configtext(
@@ -47,6 +48,7 @@ if ($hassiteconfig) {
             get_string('jupyterhub_api_url', 'jupyter'),
             get_string('jupyterhub_api_url_desc', 'jupyter'),
             'http://jupyterhub:8000/jhub',
+            PARAM_URL
         ));
 
         $settings->add(new admin_setting_configtext(
@@ -54,6 +56,7 @@ if ($hassiteconfig) {
             get_string('gradeservice_api_url', 'jupyter'),
             get_string('gradeservice_api_url_desc', 'jupyter'),
             'http://gradeservice:5000',
+            PARAM_URL
         ));
 
         $settings->add(new admin_setting_configpasswordunmask(

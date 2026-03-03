@@ -16,12 +16,13 @@
 
 namespace mod_jupyter\external;
 
+defined('MOODLE_INTERNAL') || die();
+
+use context_module;
 use mod_jupyter\jupyterhub;
 use external_function_parameters;
-use external_multiple_structure;
-use external_single_structure;
 use external_value;
-
+use invalid_parameter_exception;
 
 /**
  * Jupyter web service class for resetting the notebook.
@@ -37,11 +38,11 @@ class reset_notebook extends \external_api {
      */
     public static function execute_parameters() {
         return new external_function_parameters([
-            'user' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'unique user id'),
-            'contextid' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'module context id'),
-            'courseid' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'module course id'),
-            'instanceid' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'module instance id'),
-            'autograded' => new external_value(PARAM_RAW, VALUE_REQUIRED, '1 if assignment is auto-graded, 0 otherwise'),
+            'user' => new external_value(PARAM_USERNAME, VALUE_REQUIRED, 'unique user id'),
+            'contextid' => new external_value(PARAM_INT, VALUE_REQUIRED, 'module context id'),
+            'courseid' => new external_value(PARAM_INT, VALUE_REQUIRED, 'module course id'),
+            'instanceid' => new external_value(PARAM_INT, VALUE_REQUIRED, 'module instance id'),
+            'autograded' => new external_value(PARAM_BOOL, VALUE_REQUIRED, '1 if assignment is auto-graded, 0 otherwise'),
         ]);
     }
 
@@ -56,7 +57,36 @@ class reset_notebook extends \external_api {
      * @return string
      */
     public static function execute(string $user, int $contextid, int $courseid, int $instanceid, int $autograded) {
-        jupyterhub::reset_notebook($user, $contextid, $courseid, $instanceid, $autograded);
+        global $USER;
+
+        $params = self::validate_parameters(self::execute_parameters(), [
+            'user' => $user,
+            'contextid' => $contextid,
+            'courseid' => $courseid,
+            'instanceid' => $instanceid,
+            'autograded' => $autograded,
+        ]);
+        $cm = get_coursemodule_from_instance('jupyter', $params['instanceid'], $params['courseid'], false, MUST_EXIST);
+        $context = context_module::instance($cm->id);
+        self::validate_context($context);
+        require_capability('mod/jupyter:view', $context);
+
+        if ($params['contextid'] !== $context->id) {
+            throw new invalid_parameter_exception('The context id does not match the requested activity.');
+        }
+
+        $currentuser = mb_strtolower($USER->username, 'UTF-8');
+        if ($params['user'] !== $currentuser) {
+            throw new invalid_parameter_exception('The user parameter must match the current Moodle user.');
+        }
+
+        jupyterhub::reset_notebook(
+            $params['user'],
+            $params['contextid'],
+            $params['courseid'],
+            $params['instanceid'],
+            (int)$params['autograded']
+        );
         return 'notebook reset';
     }
 

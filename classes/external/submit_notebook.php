@@ -20,7 +20,8 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once("$CFG->dirroot/mod/jupyter/lib.php");
 
-
+use context_module;
+use invalid_parameter_exception;
 use mod_jupyter\gradeservice;
 use external_function_parameters;
 use external_value;
@@ -44,10 +45,10 @@ class submit_notebook extends \external_api {
      */
     public static function execute_parameters() {
         return new external_function_parameters([
-            'user' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'unique user id'),
-            'courseid' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'module course id'),
-            'instanceid' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'module instance id'),
-            'filename' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'notebook file name'),
+            'user' => new external_value(PARAM_USERNAME, VALUE_REQUIRED, 'unique user id'),
+            'courseid' => new external_value(PARAM_INT, VALUE_REQUIRED, 'module course id'),
+            'instanceid' => new external_value(PARAM_INT, VALUE_REQUIRED, 'module instance id'),
+            'filename' => new external_value(PARAM_FILE, VALUE_REQUIRED, 'notebook file name'),
             'token' => new external_value(PARAM_RAW, VALUE_REQUIRED, 'Gradeservice JWT'),
         ]);
     }
@@ -65,11 +66,39 @@ class submit_notebook extends \external_api {
     public static function execute(string $user, int $courseid, int $instanceid, string $filename, string $token) : array {
         global $DB, $USER;
 
+        $params = self::validate_parameters(self::execute_parameters(), [
+            'user' => $user,
+            'courseid' => $courseid,
+            'instanceid' => $instanceid,
+            'filename' => $filename,
+            'token' => $token,
+        ]);
+        $cm = get_coursemodule_from_instance('jupyter', $params['instanceid'], $params['courseid'], false, MUST_EXIST);
+        $context = context_module::instance($cm->id);
+        self::validate_context($context);
+        require_capability('mod/jupyter:view', $context);
+
+        $currentuser = mb_strtolower($USER->username, 'UTF-8');
+        if ($params['user'] !== $currentuser) {
+            throw new invalid_parameter_exception('The user parameter must match the current Moodle user.');
+        }
+
         $points = [];
+        $questions = [];
 
         try {
-            gradeservice::submit_assignment($user, $courseid, $instanceid, $filename, $token);
-            $questions = $DB->get_records('jupyter_questions_points', ['jupyter' => $instanceid, 'userid' => $USER->id], '');
+            gradeservice::submit_assignment(
+                $params['user'],
+                $params['courseid'],
+                $params['instanceid'],
+                $params['filename'],
+                $params['token']
+            );
+            $questions = $DB->get_records(
+                'jupyter_questions_points',
+                ['jupyter' => $params['instanceid'], 'userid' => $USER->id],
+                ''
+            );
         } catch (ConnectException $e) {
             $error = new stdClass;
             $error->errormessage = get_string('gradeservice_submit_connect_err', 'jupyter');
@@ -103,7 +132,7 @@ class submit_notebook extends \external_api {
             $point->max = floatval(
                 $DB->get_record(
                     'jupyter_questions',
-                    ['jupyter' => $instanceid, 'questionnr' => $question->questionnr],
+                    ['jupyter' => $params['instanceid'], 'questionnr' => $question->questionnr],
                     'maxpoints', MUST_EXIST)->maxpoints
             );
             array_push($points, $point);
@@ -119,11 +148,11 @@ class submit_notebook extends \external_api {
     public static function execute_returns() {
         return new external_multiple_structure(
             new external_single_structure([
-            'question' => new external_value(PARAM_RAW, 'question number in notebook'),
-            'reached' => new external_value(PARAM_RAW, 'reached points in question after grading'),
-            'max' => new external_value(PARAM_RAW, 'maximum reachable points in question'),
+            'question' => new external_value(PARAM_INT, 'question number in notebook'),
+            'reached' => new external_value(PARAM_FLOAT, 'reached points in question after grading'),
+            'max' => new external_value(PARAM_FLOAT, 'maximum reachable points in question'),
             'error' => new external_value(PARAM_BOOL, VALUE_OPTIONAL, 'if an error occured'),
-            'errormessage' => new external_value(PARAM_RAW, VALUE_OPTIONAL, 'what error occured'),
+            'errormessage' => new external_value(PARAM_TEXT, VALUE_OPTIONAL, 'what error occured'),
             ]));
     }
 }

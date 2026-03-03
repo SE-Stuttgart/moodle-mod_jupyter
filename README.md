@@ -5,10 +5,28 @@ This Moodle plugin integrates Jupyter Notebooks to offer a virtual programming e
 The plugin connects to a JupyterHub server and authenticates the Moodle users on the JupyterHub Server. That way they
 can access a Jupyter notebook from within Moodle.
 
+The current maintenance target of this repository is Moodle `4.5.x`.
+
 Automated grading of Jupyter Notebooks is provided through [Otter-Grader](https://otter-grader.readthedocs.io/en/latest/).  
 A quick introduction for writing assignments in the Otter-Grader format and a demo Notebook can be fond here:  
 [AutograderNotebook.md](documentation/AutograderNotebook.md)  
 [demo.ipynb](documentation/demo.ipynb)
+
+## Compatibility
+
+- Moodle `4.5.x`
+- PHP `8.3`
+- JupyterHub-based deployments
+
+The plugin expects a `JupyterHub`, not a standalone single-user Jupyter Notebook or JupyterLab server.
+
+## Important Behaviour
+
+- Every Moodle user gets the same notebook template file for an activity.
+- The actual work happens in the personal JupyterHub workspace of that user.
+- The plugin now actively synchronises the JupyterHub browser session with the current Moodle user before loading the notebook.
+
+This user synchronisation is important for teacher/student scenarios in the same course. Without it, an already active JupyterHub browser session can leak into the next Moodle user session and open the wrong notebook workspace.
 
 ## Installation
 
@@ -31,6 +49,20 @@ On installation of the plugin, you are prompted to enter the following settings.
 ### Jupyterhub API Token
 - This is necessary for authentification and communication with JupyterHub. It must match with the one set in JupyterHub. Please do not use the default one.
 
+## JupyterHub Requirements
+
+The plugin relies on the JupyterHub REST API and on JWT-based login redirects.
+
+Your JupyterHub deployment must therefore provide:
+
+- a reachable JupyterHub base URL
+- a reachable JupyterHub API URL
+- an admin API token for JupyterHub
+- a JWT secret shared with Moodle
+- user handling that matches the Moodle usernames used by the plugin
+
+If you use external authentication in JupyterHub, make sure the final JupyterHub usernames still align with the Moodle usernames.
+
 ## Create Activity
 
 This plugin is an activity plugin and can be created like any activity plugin.
@@ -47,6 +79,14 @@ This plugin is an activity plugin and can be created like any activity plugin.
 
 When the activity is created, you can navigate to it by clicking on it directly or via the hierarchy. The activity view page opens that includes an embedded jupyter notebook for you to work on.
 ![Screenshot showing the embedded Notebook.](https://raw.githubusercontent.com/SE-Stuttgart/moodle-mod_jupyter/main/documentation/how_to_result.png)
+
+For courses with teachers and students, the expected behaviour is:
+
+- students work in their own JupyterHub workspace
+- teachers open the same activity from Moodle, but still get their own JupyterHub workspace
+- notebook changes are isolated per user
+
+The teacher can therefore inspect the activity configuration and workflow in the same course without taking over the student notebook session.
 
 ## License
 
