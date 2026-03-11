@@ -119,6 +119,7 @@ function jupyter_delete_instance(int $id) {
             . json_encode($jupyter, JSON_PRETTY_PRINT));
     }
 
+    jupyter_grade_item_delete($jupyter);
     $DB->delete_records('jupyter', ['id' => $id]);
     $DB->delete_records('jupyter_grades', ['jupyter' => $id]);
     $DB->delete_records('jupyter_questions', ['jupyter' => $id]);
@@ -204,7 +205,7 @@ function jupyter_grade_item_delete($jupyter) {
         '/mod/jupyter',
         $jupyter->course,
         'mod',
-        'mod_jupyter',
+        'jupyter',
         $jupyter->id,
         0,
         null,
@@ -226,7 +227,11 @@ function jupyter_update_grades($jupyter, $userid = 0, $nullifnone = true) {
     require_once($CFG->libdir . '/gradelib.php');
 
     // Populate array of grade objects indexed by userid.
-    $grades = $DB->get_records('jupyter_grades', ['userid' => $userid]);
+    if ($userid) {
+        $grades = $DB->get_records('jupyter_grades', ['jupyter' => $jupyter->id, 'userid' => $userid]);
+    } else {
+        $grades = $DB->get_records('jupyter_grades', ['jupyter' => $jupyter->id]);
+    }
 
     grade_update('/mod/jupyter', $jupyter->course, 'mod', 'jupyter', $jupyter->id, 0, $grades);
 }

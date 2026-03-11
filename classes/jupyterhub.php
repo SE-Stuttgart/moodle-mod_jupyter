@@ -31,6 +31,7 @@ namespace mod_jupyter;
 defined('MOODLE_INTERNAL') || die();
 require($CFG->dirroot . '/mod/jupyter/vendor/autoload.php');
 
+use coding_exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
@@ -60,6 +61,9 @@ class jupyterhub {
         $filearea = $autograded ? 'assignment' : 'package';
         $files = $fs->get_area_files($contextid, 'mod_jupyter', $filearea, 0, 'id', false);
         $file = reset($files);
+        if (!$file) {
+            throw new coding_exception('No notebook file is configured for this activity.');
+        }
         $filename = $file->get_filename();
 
         $client = new Client(['headers' => ['Authorization' => 'token ' . get_config('mod_jupyter', 'jupyterhub_api_token')]]);
@@ -136,6 +140,9 @@ class jupyterhub {
         $filearea = $autograded ? 'assignment' : 'package';
         $files = $fs->get_area_files($contextid, 'mod_jupyter', $filearea, 0, 'id', false);
         $file = reset($files);
+        if (!$file) {
+            throw new coding_exception('No notebook file is configured for this activity.');
+        }
         $filename = $file->get_filename();
 
         $client = new Client(['headers' => ['Authorization' => 'token ' . get_config('mod_jupyter', 'jupyterhub_api_token')]]);
